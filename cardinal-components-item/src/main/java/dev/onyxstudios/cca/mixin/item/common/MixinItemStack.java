@@ -66,7 +66,7 @@ public abstract class MixinItemStack implements ComponentProvider {
     public abstract Item getItem();
 
     @Shadow
-    private boolean empty;
+    public abstract boolean isEmpty();
 
     @Inject(method = "<init>(Lnet/minecraft/nbt/NbtCompound;)V", at = @At("RETURN"))
     private void initComponentsNBT(NbtCompound tag, CallbackInfo ci) {
@@ -78,7 +78,7 @@ public abstract class MixinItemStack implements ComponentProvider {
 
     @Override
     public ComponentContainer getComponentContainer() {
-        if (this.empty) return EMPTY_COMPONENTS;
+        if (this.isEmpty()) return EMPTY_COMPONENTS;
         if (this.components == null) {
             this.components = ((ItemCaller) this.getItem()).cardinal_createComponents((ItemStack) (Object) this);
         }
